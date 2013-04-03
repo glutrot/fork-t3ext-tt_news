@@ -42,11 +42,7 @@ $TYPO3_CONF_VARS['BE']['AJAX']['txttnewsM1::loadList'] = t3lib_extMgm::extPath('
 $TYPO3_CONF_VARS['BE']['AJAX']['tceFormsCategoryTree::expandCollapse'] = t3lib_extMgm::extPath('tt_news').'lib/class.tx_ttnews_TCAform_selectTree.php:tx_ttnews_TCAform_selectTree->ajaxExpandCollapse';
 
 
-if (function_exists('t3lib_utility_VersionNumber::convertVersionNumberToInteger')) {
-	$t3version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
-} else {
-    $t3version = t3lib_div::int_from_ver(TYPO3_version);
-}
+$t3version = tx_ttnews_compatibility::getInstance()->int_from_ver(TYPO3_version);
 
 if ($t3version < 4006000) {
 	// caching framework configuration
