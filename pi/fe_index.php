@@ -121,6 +121,33 @@ $tt_newsObj->conf = &$TSFE->tmpl->setup['plugin.']['tt_news.'];
 if (! $tt_newsObj->conf['dontUsePidList']) {
 	$tt_newsObj->initPidList();
 }
+/**
+ * For some reasons this is needed for TYPO3 6.1
+ * 
+ * FIXME: there must be a proper way to do this
+ * 
+ */     
+$TCA['tt_news'] = array (
+		'ctrl' => array (
+				'enablecolumns' => array (
+						'disabled' => 'hidden',
+						'starttime' => 'starttime',
+						'endtime' => 'endtime',
+						'fe_group' => 'fe_group',
+				),
+		)
+);
+$TCA['tt_news_cat'] = array (
+		'ctrl' => array (
+				'enablecolumns' => array (
+						'disabled' => 'hidden',
+						'starttime' => 'starttime',
+						'endtime' => 'endtime',
+						'fe_group' => 'fe_group',
+				),
+		)
+);
+
 $tt_newsObj->enableFields = $tt_newsObj->getEnableFields('tt_news');
 
 $tt_newsObj->initCategoryVars();
