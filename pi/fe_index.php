@@ -93,7 +93,9 @@ if ($L > 0) {
 $ajaxID = (string) t3lib_div::_GP('ajaxID');
 
 
-
+require_once(t3lib_extMgm::extPath('tt_news').'pi/class.tx_ttnews.php');
+require_once(t3lib_extMgm::extPath('tt_news') . 'lib/class.tx_ttnews_helpers.php');
+require_once(t3lib_extMgm::extPath('tt_news').'lib/class.tx_ttnews_typo3ajax.php');
 /**
  * TODO: 24.11.2009
  *
@@ -123,10 +125,10 @@ if (! $tt_newsObj->conf['dontUsePidList']) {
 }
 /**
  * For some reasons this is needed for TYPO3 6.1
- * 
+ *
  * FIXME: there must be a proper way to do this
- * 
- */     
+ *
+ */
 $TCA['tt_news'] = array (
 		'ctrl' => array (
 				'enablecolumns' => array (
