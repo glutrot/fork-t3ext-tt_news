@@ -74,9 +74,23 @@
  */
 
 
+	// DEFAULT initialization of a module [BEGIN]
+unset($MCONF);
+require('conf.php');
+require_once($BACK_PATH.'init.php');
+require_once($BACK_PATH.'template.php');
+
 $GLOBALS['LANG']->includeLLFile('EXT:tt_news/mod1/locallang.xml');
+require_once(PATH_t3lib.'class.t3lib_scbase.php');
 $GLOBALS['BE_USER']->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 	// DEFAULT initialization of a module [END]
+
+
+
+
+require_once(t3lib_extMgm::extPath('tt_news').'lib/class.tx_ttnews_div.php');
+require_once(t3lib_extMgm::extPath('tt_news').'lib/class.tx_ttnews_categorytree.php');
+require_once(t3lib_extMgm::extPath('tt_news').'lib/class.tx_ttnews_recordlist.php');
 
 
 /**
@@ -605,7 +619,9 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 		$this->initSubCategories();
 
 		$table = 'tt_news';
+
 		$dblist = t3lib_div::makeInstance('tx_ttnews_recordlist');
+		/* @var $dblist tx_ttnews_recordlist */
 
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->script = $this->script;
@@ -712,6 +728,8 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 	 * @return	[type]		...
 	 */
 	function processAjaxRequestConstruct() {
+		require_once(PATH_typo3.'template.php');
+
 		global $SOBE;
 
 			// Create a new anonymous object:
@@ -953,17 +971,25 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 		$backPath = $GLOBALS['BACK_PATH'];
 
 			// CSH
-		if (!strlen($this->id))	{
-			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txttnewsM1', 'list_module_noId', $backPath);
-		} elseif(!$this->id) {
-			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txttnewsM1', 'list_module_root', $backPath);
-		} else {
-			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txttnewsM1', 'list_module', $backPath);
-		}
+// 		if (!strlen($this->id))	{
+// 			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txttnewsM1', 'list_module_noId', $backPath);
+// 		} elseif(!$this->id) {
+// 			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txttnewsM1', 'list_module_root', $backPath);
+// 		} else {
+// 			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txttnewsM1', 'list_module', $backPath);
+// 		}
 
 		if (isset($this->id)) {
 			if ($GLOBALS['BE_USER']->check('modules','web_list'))	{
-				$href = $backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+
+
+				if (tx_ttnews_compatibility::getInstance()->int_from_ver(TYPO3_version) >= 6000000) {
+					$href = $backPath . 'mod.php?M=web_list&id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				} else {
+					$href = $backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				}
+
+
 				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
 						'<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/list.gif', 'width="11" height="11"') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
 						'</a>';
