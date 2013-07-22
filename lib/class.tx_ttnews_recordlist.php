@@ -60,6 +60,11 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+require_once(PATH_t3lib.'class.t3lib_recordlist.php');
+require_once(PATH_typo3.'class.db_list.inc');
+
+require_once(t3lib_extMgm::extPath('cms').'layout/class.tx_cms_layout.php');
+
 
 	/**
 	 * [Describe function...]
