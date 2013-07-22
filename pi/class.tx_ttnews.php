@@ -40,6 +40,10 @@
  * @co-author Ingo Renner <typo3@ingo-renner.com>
  */
 
+require_once (t3lib_extMgm::extPath('tt_news') . 'lib/class.tx_ttnews_catmenu.php');
+require_once (t3lib_extMgm::extPath('tt_news') . 'lib/class.tx_ttnews_helpers.php');
+require_once (t3lib_extMgm::extPath('tt_news') . 'lib/class.tx_ttnews_cache.php');
+
 /**
  * Plugin 'news' for the 'tt_news' extension.
  *
