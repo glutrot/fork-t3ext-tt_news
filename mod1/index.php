@@ -452,7 +452,7 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 			}
 
 				// Create overview
-			$outputString .= '<table border="0" cellpadding="1" cellspacing="2" id="typo3-page-stdlist">'.implode('',$tRows).'</table>';
+			$outputString = '<table border="0" cellpadding="1" cellspacing="2" id="typo3-page-stdlist">'.implode('',$tRows).'</table>';
 
 				// Add output:
 			$this->markers['MOD_INFO'] = $outputString;
@@ -779,7 +779,7 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 			$row = t3lib_BEfunc::getRecord($table, $this->category);
 //			$reset = '<a href="'.$this->script.'?id='.$this->id.'" id="resetcatselection">'.$LANG->getLL('resetCatSelection').'</a>';
 			$title = '<strong>'.t3lib_BEfunc::getRecordTitle($table,$row).'</strong>';
-			$content = '<div id="newscatsmsg">'.$reset.$LANG->getLL('showingOnlyCat').$title.'</div>';
+			$content = '<div id="newscatsmsg">'.$LANG->getLL('showingOnlyCat').$title.'</div>';
 
 			if ($this->useSubCategories && ($subCats = t3lib_div::rmFromList($this->category,$this->selectedCategories))) {
 				if (!$this->mData['showHiddenCategories']) {
@@ -814,7 +814,7 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 
 	function displaySearch($url) {
 		$formElements=array('<form action="'.htmlspecialchars($url).'" method="post">','</form>');
-
+		$content = '';
 			// Table with the search box:
 		$content.= '
 			'.$formElements[0].'
@@ -983,11 +983,7 @@ class tx_ttnews_module1 extends t3lib_SCbase {
 			if ($GLOBALS['BE_USER']->check('modules','web_list'))	{
 
 
-				if (tx_ttnews_compatibility::getInstance()->int_from_ver(TYPO3_version) >= 6000000) {
-					$href = $backPath . 'mod.php?M=web_list&id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				} else {
-					$href = $backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				}
+				$href = t3lib_BEfunc::getModuleUrl('web_list', array ('id' => $this->pageinfo['uid'], 'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI')) );
 
 
 				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
