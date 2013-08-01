@@ -3872,12 +3872,10 @@ class tx_ttnews extends tslib_pibase {
 				$row = $rows[0];
 				// get the translated record if the content language is not the default language
 				if ($L) {
-					$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-					$row = $this->tsfe->sys_page->getRecordOverlay('pages', $row, $L, $OLmode);
+					$row = $this->tsfe->sys_page->getPageOverlay($uid,$L);
 				}
-
-				$this->pageArray[$uid] = $row;
-				$val = $this->pageArray[$uid][$fN];
+				$this->pageArray[$key] = $row;
+				$val = $this->pageArray[$key][$fN];
 			}
 		}
 		return $val;
