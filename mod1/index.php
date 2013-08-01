@@ -78,10 +78,12 @@
 unset($MCONF);
 require('conf.php');
 require_once($BACK_PATH.'init.php');
-require_once($BACK_PATH.'template.php');
+if (tx_ttnews_compatibility::getInstance()->int_from_ver(TYPO3_version) < 6002000) {
+	require_once($BACK_PATH.'template.php');
+}
 
 $GLOBALS['LANG']->includeLLFile('EXT:tt_news/mod1/locallang.xml');
-require_once(PATH_t3lib.'class.t3lib_scbase.php');
+//require_once(PATH_t3lib.'class.t3lib_scbase.php');
 $GLOBALS['BE_USER']->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 	// DEFAULT initialization of a module [END]
 
