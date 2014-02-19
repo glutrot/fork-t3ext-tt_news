@@ -2373,6 +2373,8 @@ class tx_ttnews extends tslib_pibase {
 		} else {
 			if ($lConf['imageMarkerOptionSplit']) {
 				$m = '_1';
+			} else {
+				$m = '';
 			}
 			$markerArray['###' . $marker . $m . '###'] = $this->local_cObj->stdWrap($markerArray['###' . $marker . $m . '###'], $lConf['image.']['noImage_stdWrap.']);
 		}
