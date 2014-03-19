@@ -1448,7 +1448,9 @@ class tx_ttnews extends tslib_pibase {
 				$res = $this->db->exec_SELECTquery($fields, 'tt_news_cat', ($this->dontStartFromRootRecord ? $addCatlistWhere : 'tt_news_cat.parent_category=0') . $this->SPaddWhere . $this->enableCatFields . $this->catlistWhere, '', 'tt_news_cat.' . $this->config['catOrderBy']);
 
 				$cArr = array();
-				$cArr[] = $this->local_cObj->stdWrap($this->pi_getLL('catmenuHeader', 'Select a category:'), $lConf['catmenuHeader_stdWrap.']);
+				if (!$lConf['hideCatmenuHeader']) {
+					$cArr[] = $this->local_cObj->stdWrap($this->pi_getLL('catmenuHeader', 'Select a category:'), $lConf['catmenuHeader_stdWrap.']);
+				}
 				while (($row = $this->db->sql_fetch_assoc($res))) {
 					$cArr[] = $row;
 					$subcats = $this->hObj->getSubCategoriesForMenu($row['uid'], $fields, $this->catlistWhere);
