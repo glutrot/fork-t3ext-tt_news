@@ -56,7 +56,7 @@ class tx_ttnews extends tslib_pibase {
 	var $prefixId = 'tx_ttnews'; // Same as class name
 	var $scriptRelPath = 'pi/class.tx_ttnews.php'; // Path to this script relative to the extension dir.
 	var $extKey = 'tt_news'; // The extension key.
-	var $pi_checkCHash = true;
+	var $pi_checkCHash = true; // will be overridden by constructor
 	/**
 	 * @var tx_ttnews_helpers
 	 */
@@ -137,6 +137,23 @@ class tx_ttnews extends tslib_pibase {
 	 * @var tslib_cObj
 	 */
 	var $local_cObj;
+
+	function __construct() {
+		// cHash checks must be used when cache is enabled but there are some
+		// situations which require it to be disabled. Allow this to happen via
+		// template setup by setting plugin.tt_news.checkCHash = 0
+		// NOTE: This should only happen conditionally and only if it has made
+		//       sure that tt_news is not being cached (i.e. by changing USER
+		//       to USER_INT and/or setting config.no_cache).
+		$this->pi_checkCHash = true;
+		if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tt_news.']['checkCHash'])) {
+			$this->pi_checkCHash = ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tt_news.']['checkCHash'] != 0);
+		}
+
+		// original constructor immediately processes $this->pi_checkCHash, so
+		// it must only be called afterwards
+		parent::__construct();
+	}
 
 	/**
 	 * Main news function: calls the init_news() function and decides by the given CODEs which of the
